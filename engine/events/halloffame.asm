@@ -22,7 +22,7 @@ HallOfFame::
 	jr nc, .ok
 	inc [hl]
 .ok
-	farcall SaveGameData
+	farcall _SaveGameData
 	call GetHallOfFameParty
 	farcall AddHallOfFameEntry
 
@@ -64,9 +64,8 @@ HallOfFame_FadeOutMusic:
 	ld [wStateFlags], a
 	ldh [hMapAnims], a
 	farcall InitDisplayForHallOfFame
-	ld c, 100
-	jp DelayFrames
-
+	ret
+	
 HallOfFame_PlayMusicDE::
 	push de
 	ld de, MUSIC_NONE

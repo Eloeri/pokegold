@@ -28,7 +28,7 @@ NurseAskHealText:
 	done
 
 NurseTakePokemonText:
-	text "OK, may I see your"
+	text "May I see your" ;modified
 	line "#MON?"
 	done
 
