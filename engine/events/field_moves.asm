@@ -36,7 +36,7 @@ ShakeHeadbuttTree:
 	ld hl, SPRITEANIMSTRUCT_TILE_ID
 	add hl, bc
 	ld [hl], FIELDMOVE_TREE
-	ld a, 36 * SPRITEOAMSTRUCT_LENGTH
+	ld a, 36 * OBJ_SIZE
 	ld [wCurSpriteOAMAddr], a
 	farcall DoNextFrameForAllSprites
 	call HideHeadbuttTree
@@ -51,7 +51,7 @@ ShakeHeadbuttTree:
 	and a
 	jr z, .done
 	dec [hl]
-	ld a, 36 * SPRITEOAMSTRUCT_LENGTH
+	ld a, 36 * OBJ_SIZE
 	ld [wCurSpriteOAMAddr], a
 	farcall DoNextFrameForAllSprites
 	call DelayFrame
@@ -74,6 +74,8 @@ HeadbuttTreeGFX:
 INCBIN "gfx/overworld/headbutt_tree.2bpp"
 
 HideHeadbuttTree:
+	; Replaces all four headbutted tree tiles with tile $05
+	; Assumes any tileset with headbutt trees has grass at tile $05
 	xor a
 	ldh [hBGMapMode], a
 	ld a, [wPlayerDirection]
@@ -87,7 +89,7 @@ HideHeadbuttTree:
 	ld h, [hl]
 	ld l, a
 
-	ld a, $05 ; grass block
+	ld a, $05 ; grass tile
 	ld [hli], a
 	ld [hld], a
 	ld bc, SCREEN_WIDTH
@@ -118,9 +120,9 @@ OWCutAnimation:
 	call PlaySFX
 .loop
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .finish
-	ld a, 36 * SPRITEOAMSTRUCT_LENGTH
+	ld a, 36 * OBJ_SIZE
 	ld [wCurSpriteOAMAddr], a
 	callfar DoNextFrameForAllSprites
 	call OWCutJumptable
@@ -206,7 +208,7 @@ Cut_WaitAnimSFX:
 
 .finished
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 Cut_SpawnLeaf:
@@ -227,17 +229,21 @@ Cut_SpawnLeaf:
 	pop de
 	ret
 
+; cut leaf spawn coords table bits
+DEF CUT_LEAF_SPAWN_RIGHT_F  EQU 0
+DEF CUT_LEAF_SPAWN_BOTTOM_F EQU 1
+
 Cut_GetLeafSpawnCoords:
 	ld de, 0
 	ld a, [wPlayerMetatileX]
-	bit 0, a
+	bit 0, a ; even or odd?
 	jr z, .left_side
-	set 0, e
+	set CUT_LEAF_SPAWN_RIGHT_F, e
 .left_side
 	ld a, [wPlayerMetatileY]
-	bit 0, a
+	bit 0, a ; even or odd?
 	jr z, .top_side
-	set 1, e
+	set CUT_LEAF_SPAWN_BOTTOM_F, e
 .top_side
 	ld a, [wPlayerDirection]
 	and %00001100
@@ -311,9 +317,9 @@ FlyFromAnim:
 	ld [wFrameCounter], a
 .loop
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .exit
-	ld a, 0 * SPRITEOAMSTRUCT_LENGTH
+	ld a, 0 * OBJ_SIZE
 	ld [wCurSpriteOAMAddr], a
 	callfar DoNextFrameForAllSprites
 	call FlyFunction_FrameTimer
@@ -348,9 +354,9 @@ FlyToAnim:
 	ld [wFrameCounter], a
 .loop
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .exit
-	ld a, 0 * SPRITEOAMSTRUCT_LENGTH
+	ld a, 0 * OBJ_SIZE
 	ld [wCurSpriteOAMAddr], a
 	callfar DoNextFrameForAllSprites
 	call FlyFunction_FrameTimer
@@ -369,7 +375,7 @@ FlyToAnim:
 	ld c, 4
 .OAMloop
 	ld [hli], a ; tile id
-rept SPRITEOAMSTRUCT_LENGTH - 1
+rept OBJ_SIZE - 1
 	inc hl
 endr
 	inc a
@@ -417,7 +423,7 @@ FlyFunction_FrameTimer:
 
 .exit
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 .SpawnLeaf:

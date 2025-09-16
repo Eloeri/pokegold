@@ -379,7 +379,7 @@ SECTION "Map Scripts 26", ROMX
 INCLUDE "maps/FuchsiaMart.asm"
 INCLUDE "maps/SafariZoneMainOffice.asm"
 INCLUDE "maps/FuchsiaGym.asm"
-INCLUDE "maps/BillsBrothersHouse.asm"
+INCLUDE "maps/BillsOlderSistersHouse.asm"
 INCLUDE "maps/FuchsiaPokecenter1F.asm"
 INCLUDE "maps/FuchsiaPokecenter2FBeta.asm"
 INCLUDE "maps/SafariZoneWardensHome.asm"
@@ -492,3 +492,5 @@ INCLUDE "maps/CherrygroveEvolutionSpeechHouse.asm"
 INCLUDE "maps/Route30BerryHouse.asm"
 INCLUDE "maps/MrPokemonsHouse.asm"
 INCLUDE "maps/Route31VioletGate.asm"
+
+ENDSECTION

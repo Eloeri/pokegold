@@ -9,15 +9,15 @@ _2DMenu_::
 	call StaticMenuJoypad
 	call MenuClickSound
 	ld a, [wMenuDataFlags]
-	bit 1, a
+	bit STATICMENU_ENABLE_SELECT_F, a
 	jr z, .skip
 	call GetMenuJoypad
-	bit SELECT_F, a
+	bit B_PAD_SELECT, a
 	jr nz, .quit1
 
 .skip
 	ld a, [wMenuDataFlags]
-	bit 0, a
+	bit STATICMENU_DISABLE_B_F, a
 	jr nz, .skip2
 	call GetMenuJoypad
 	bit B_BUTTON_F, a
@@ -159,10 +159,10 @@ Init2DMenuCursorPosition:
 	ld [hli], a
 	ld [hld], a
 	ld a, [wMenuDataFlags]
-	bit 5, a
+	bit STATICMENU_WRAP_F, a
 	ret z
-	set 5, [hl]
-	set 4, [hl]
+	set _2DMENU_WRAP_UP_DOWN_F, [hl]
+	set _2DMENU_WRAP_LEFT_RIGHT_F, [hl]
 	ret
 
 .InitFlags_b:
@@ -173,14 +173,14 @@ Init2DMenuCursorPosition:
 
 .InitFlags_c:
 	ld hl, wMenuDataFlags
-	ld a, A_BUTTON
-	bit 0, [hl]
+	ld a, PAD_A
+	bit STATICMENU_DISABLE_B_F, [hl]
 	jr nz, .skip
-	or B_BUTTON
+	or PAD_B
 .skip
-	bit 1, [hl]
+	bit STATICMENU_ENABLE_SELECT_F, [hl]
 	jr z, .skip2
-	or SELECT
+	or PAD_SELECT
 .skip2
 	ld [wMenuJoypadFilter], a
 	ret
@@ -189,7 +189,7 @@ _StaticMenuJoypad::
 	call Place2DMenuCursor
 _ScrollingMenuJoypad::
 	ld hl, w2DMenuFlags2
-	res 7, [hl]
+	res _2DMENU_DISABLE_JOYPAD_FILTER_F, [hl]
 	ldh a, [hBGMapMode]
 	push af
 
@@ -210,7 +210,7 @@ _ScrollingMenuJoypad::
 	call Menu_WasButtonPressed
 	jr c, .pressed
 	ld a, [w2DMenuFlags1]
-	bit 7, a
+	bit _2DMENU_DISABLE_JOYPAD_FILTER_F, a
 	jp nz, .done
 	jr .loopRTC
 
@@ -219,7 +219,7 @@ _ScrollingMenuJoypad::
 	call _2DMenuInterpretJoypad
 	jp c, .done
 	ld a, [w2DMenuFlags1]
-	bit 7, a
+	bit _2DMENU_DISABLE_JOYPAD_FILTER_F, a
 	jr nz, .done
 	call GetMenuJoypad
 	ld b, a
@@ -235,7 +235,7 @@ _ScrollingMenuJoypad::
 
 Menu_WasButtonPressed:
 	ld a, [w2DMenuFlags1]
-	bit 6, a
+	bit _2DMENU_ENABLE_SPRITE_ANIMS_F, a
 	jr z, .skip_to_joypad
 	callfar PlaySpriteAnimationsAndDelayFrame
 
@@ -254,24 +254,24 @@ _2DMenuInterpretJoypad:
 	jp nz, .a_b_start_select
 	bit B_BUTTON_F, a
 	jp nz, .a_b_start_select
-	bit SELECT_F, a
+	bit B_PAD_SELECT, a
 	jp nz, .a_b_start_select
-	bit START_F, a
+	bit B_PAD_START, a
 	jp nz, .a_b_start_select
-	bit D_RIGHT_F, a
+	bit B_PAD_RIGHT, a
 	jr nz, .d_right
-	bit D_LEFT_F, a
+	bit B_PAD_LEFT, a
 	jr nz, .d_left
-	bit D_UP_F, a
+	bit B_PAD_UP, a
 	jr nz, .d_up
-	bit D_DOWN_F, a
+	bit B_PAD_DOWN, a
 	jr nz, .d_down
 	and a
 	ret
 
 .set_bit_7
 	ld hl, w2DMenuFlags2
-	set 7, [hl]
+	set _2DMENU_EXITING_F, [hl]
 	scf
 	ret
 
@@ -286,9 +286,9 @@ _2DMenuInterpretJoypad:
 
 .check_wrap_around_down
 	ld a, [w2DMenuFlags1]
-	bit 5, a
+	bit _2DMENU_WRAP_UP_DOWN_F, a
 	jr nz, .wrap_around_down
-	bit 3, a
+	bit _2DMENU_EXIT_DOWN_F, a
 	jp nz, .set_bit_7
 	xor a
 	ret
@@ -309,9 +309,9 @@ _2DMenuInterpretJoypad:
 
 .check_wrap_around_up
 	ld a, [w2DMenuFlags1]
-	bit 5, a
+	bit _2DMENU_WRAP_UP_DOWN_F, a
 	jr nz, .wrap_around_up
-	bit 2, a
+	bit _2DMENU_EXIT_UP_F, a
 	jp nz, .set_bit_7
 	xor a
 	ret
@@ -333,9 +333,9 @@ _2DMenuInterpretJoypad:
 
 .check_wrap_around_left
 	ld a, [w2DMenuFlags1]
-	bit 4, a
+	bit _2DMENU_WRAP_LEFT_RIGHT_F, a
 	jr nz, .wrap_around_left
-	bit 1, a
+	bit _2DMENU_EXIT_LEFT_F, a
 	jp nz, .set_bit_7
 	xor a
 	ret
@@ -357,9 +357,9 @@ _2DMenuInterpretJoypad:
 
 .check_wrap_around_right
 	ld a, [w2DMenuFlags1]
-	bit 4, a
+	bit _2DMENU_WRAP_LEFT_RIGHT_F, a
 	jr nz, .wrap_around_right
-	bit 0, a
+	bit _2DMENU_EXIT_RIGHT_F, a
 	jp nz, .set_bit_7
 	xor a
 	ret
@@ -454,21 +454,22 @@ _PushWindow::
 	dec b
 	jr nz, .loop
 
-; If bit 6 or 7 of the menu flags is set, set bit 0 of the address
-; at 7:[wWindowStackPointer], and draw the menu using the coordinates from the header.
-; Otherwise, reset bit 0 of 7:[wWindowStackPointer].
+; If bit MENU_BACKUP_TILES_F or MENU_BACKUP_TILES_2_F of the menu flags is set,
+; also set bit MENU_RESTORE_TILES_F of the address at 7:[wWindowStackPointer],
+; and draw the menu using the coordinates from the header.
+; Otherwise, reset bit MENU_RESTORE_TILES_F of 7:[wWindowStackPointer].
 	ld a, [wMenuFlags]
-	bit 6, a
-	jr nz, .bit_6
-	bit 7, a
-	jr z, .not_bit_7
+	bit MENU_BACKUP_TILES_F, a
+	jr nz, .backup_tiles
+	bit MENU_BACKUP_TILES_2_F, a
+	jr z, .no_backup_tiles
 
-.bit_6
+.backup_tiles
 	ld hl, wWindowStackPointer
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	set 0, [hl]
+	set MENU_RESTORE_TILES_F, [hl]
 	call MenuBoxCoord2Tile
 	call GetMenuBoxDims
 	inc b
@@ -494,13 +495,13 @@ _PushWindow::
 	jr nz, .row
 	jr .done
 
-.not_bit_7
+.no_backup_tiles
 	pop hl ; last-pushed register was de
 	push hl
 	ld a, [hld]
 	ld l, [hl]
 	ld h, a
-	res 0, [hl]
+	res MENU_RESTORE_TILES_F, [hl]
 
 .done
 	pop hl
@@ -541,7 +542,7 @@ _ExitMenu::
 	ld [wWindowStackPointer + 1], a
 	call PopWindow
 	ld a, [wMenuFlags]
-	bit 0, a
+	bit MENU_RESTORE_TILES_F, a
 	jr z, .loop
 	ld d, h
 	ld e, l
@@ -573,7 +574,7 @@ RestoreOverworldMapTiles:
 	call OpenSRAM
 	hlcoord 0, 0
 	ld de, sScratch
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	call CopyBytes
 	call CloseSRAM
 	call LoadOverworldTilemapAndAttrmapPals
@@ -581,7 +582,7 @@ RestoreOverworldMapTiles:
 	call OpenSRAM
 	ld hl, sScratch
 	decoord 0, 0
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 .loop
 	ld a, [hl]
 	cp $61
@@ -614,7 +615,7 @@ _InitVerticalMenuCursor::
 	ld hl, w2DMenuCursorInitY
 	ld a, [wMenuBorderTopCoord]
 	inc a
-	bit 6, b
+	bit STATICMENU_NO_TOP_SPACING_F, b
 	jr nz, .skip_offset
 	inc a
 .skip_offset
@@ -630,15 +631,15 @@ _InitVerticalMenuCursor::
 	ld a, 1
 	ld [hli], a
 ; w2DMenuFlags1
-	ld [hl], $0
-	bit 5, b
+	ld [hl], 0
+	bit STATICMENU_WRAP_F, b
 	jr z, .skip_bit_5
-	set 5, [hl]
+	set _2DMENU_WRAP_UP_DOWN_F, [hl]
 .skip_bit_5
 	ld a, [wMenuFlags]
-	bit 4, a
+	bit MENU_SPRITE_ANIMS_F, a
 	jr z, .skip_bit_6
-	set 6, [hl]
+	set _2DMENU_ENABLE_SPRITE_ANIMS_F, [hl]
 .skip_bit_6
 	inc hl
 ; w2DMenuFlags2
@@ -648,10 +649,10 @@ _InitVerticalMenuCursor::
 	ln a, 2, 0
 	ld [hli], a
 ; wMenuJoypadFilter
-	ld a, A_BUTTON
-	bit 0, b
+	ld a, PAD_A
+	bit STATICMENU_DISABLE_B_F, b
 	jr nz, .skip_bit_1
-	add B_BUTTON
+	add PAD_B
 .skip_bit_1
 	ld [hli], a
 ; wMenuCursorY

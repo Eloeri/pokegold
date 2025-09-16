@@ -155,8 +155,8 @@ RunTradeAnimScript:
 	jr z, .NotCGB
 	ld a, $1
 	ldh [rVBK], a
-	ld hl, vTiles0
-	ld bc, VRAM_End - VRAM_Begin
+	ld hl, STARTOF(VRAM)
+	ld bc, SIZEOF(VRAM)
 	xor a
 	call ByteFill
 	ld a, $0
@@ -164,7 +164,7 @@ RunTradeAnimScript:
 
 .NotCGB:
 	hlbgcoord 0, 0
-	ld bc, VRAM_End - vBGMap0
+	ld bc, STARTOF(VRAM) + SIZEOF(VRAM) - vBGMap0
 	ld a, " "
 	call ByteFill
 	ld hl, TradeGameBoyLZ
@@ -208,7 +208,7 @@ RunTradeAnimScript:
 
 DoTradeAnimation:
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .finished
 	call .DoTradeAnimCommand
 	callfar PlaySpriteAnimations
@@ -291,7 +291,7 @@ TradeAnim_AdvanceScriptPointer:
 
 TradeAnim_End:
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 TradeAnim_TubeToOT1:
@@ -452,7 +452,7 @@ TradeAnim_TubeToPlayer8:
 	call DisableLCD
 	callfar ClearSpriteAnims
 	hlbgcoord 0, 0
-	ld bc, VRAM_End - vBGMap0
+	ld bc, STARTOF(VRAM) + SIZEOF(VRAM) - vBGMap0
 	ld a, " "
 	call ByteFill
 	xor a
@@ -1214,7 +1214,7 @@ TradeAnim_Wait80Frames:
 
 TradeAnim_BlankTilemap:
 	hlcoord 0, 0
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	ld a, " "
 	call ByteFill
 	ret
@@ -1354,13 +1354,14 @@ DebugTrade: ; unreferenced
 
 MACRO debugtrade
 ; species, ot name, ot id
-	db \1, \2
+	db \1
+	dname \2, NAME_LENGTH_JAPANESE
 	dw \3
 ENDM
 
 .DebugTradeData:
-	debugtrade VENUSAUR,  "ゲーフり@@", $0123 ; GAME FREAK
-	debugtrade CHARIZARD, "クりーチャ@", $0456 ; Creatures Inc.
+	debugtrade VENUSAUR,  "ゲーフり",  $0123 ; GAME FREAK
+	debugtrade CHARIZARD, "クりーチャ", $0456 ; Creatures Inc.
 
 TradeGameBoyTilemap:  INCBIN "gfx/trade/game_boy.tilemap" ; 6x8
 TradeLinkTubeTilemap: INCBIN "gfx/trade/link_cable.tilemap" ; 12x3

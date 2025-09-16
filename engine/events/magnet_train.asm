@@ -34,7 +34,7 @@ MagnetTrain:
 	ld [hl], VBLANK_CUTSCENE
 .loop
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .done
 	callfar PlaySpriteAnimations
 	call MagnetTrain_Jumptable
@@ -167,7 +167,7 @@ DrawMagnetTrain:
 	xor a
 .loop
 	call GetMagnetTrainBGTiles
-	ld b, BG_MAP_WIDTH / 2
+	ld b, TILEMAP_WIDTH / 2
 	call .FillAlt
 	inc a
 	cp SCREEN_HEIGHT
@@ -244,19 +244,19 @@ SetMagnetTrainPals:
 
 	; bushes
 	hlbgcoord 0, 0
-	ld bc, 4 * BG_MAP_WIDTH
+	ld bc, 4 * TILEMAP_WIDTH
 	ld a, PAL_BG_GREEN
 	call ByteFill
 
 	; train
 	hlbgcoord 0, 4
-	ld bc, 10 * BG_MAP_WIDTH
+	ld bc, 10 * TILEMAP_WIDTH
 	xor a ; PAL_BG_GRAY
 	call ByteFill
 
 	; more bushes
 	hlbgcoord 0, 14
-	ld bc, 4 * BG_MAP_WIDTH
+	ld bc, 4 * TILEMAP_WIDTH
 	ld a, PAL_BG_GREEN
 	call ByteFill
 
@@ -366,7 +366,7 @@ MagnetTrain_Jumptable:
 	ret
 
 .TrainArrived:
-	ld a, $80
+	ld a, JUMPTABLE_EXIT
 	ld [wJumptableIndex], a
 	ld de, SFX_TRAIN_ARRIVED
 	call PlaySFX

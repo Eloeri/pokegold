@@ -30,7 +30,7 @@ LoadSGBLayoutCGB:
 
 CGBLayoutJumptable:
 ; entries correspond to SCGB_* constants (see constants/scgb_constants.asm)
-	table_width 2, CGBLayoutJumptable
+	table_width 2
 	dw _CGB_BattleGrayscale
 	dw _CGB_BattleColors
 	dw _CGB_PokegearPals
@@ -120,7 +120,7 @@ _CGB_FinishBattleScreenLayout:
 	ld bc, 1 palettes
 	call CopyBytes
 	hlcoord 0, 0, wAttrmap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	ld a, PAL_BATTLE_BG_ENEMY_HP
 	call ByteFill
 	hlcoord 0, 4, wAttrmap
@@ -488,6 +488,7 @@ _CGB_BetaPoker:
 _CGB_Diploma:
 	ld hl, DiplomaPalettes
 	ld de, wBGPals1
+	assert DiplomaPalettes + 8 palettes == PartyMenuOBPals
 	ld bc, 16 palettes
 	call CopyBytes
 
@@ -614,7 +615,7 @@ _CGB_TrainerCard:
 
 	; card border
 	hlcoord 0, 0, wAttrmap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	ld a, $1 ; falkner
 	call ByteFill
 	; trainer sprite area

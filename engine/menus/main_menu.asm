@@ -145,9 +145,9 @@ MainMenuJoypadLoop:
 	call MainMenu_PrintCurrentTimeAndDay
 	call GetScrollingMenuJoypad
 	ld a, [wMenuJoypad]
-	cp B_BUTTON
+	cp PAD_B
 	jr z, .b_button
-	cp A_BUTTON
+	cp PAD_A
 	jr z, .a_button
 	jr .loop
 
@@ -180,7 +180,7 @@ MainMenu_PrintCurrentTimeAndDay:
 
 .PlaceBox:
 	call CheckRTCStatus
-	and $80
+	and RTC_RESET
 	jr nz, .TimeFail
 	hlcoord 0, 12
 	ld b, 4
@@ -197,7 +197,7 @@ MainMenu_PrintCurrentTimeAndDay:
 	and a
 	ret z
 	call CheckRTCStatus
-	and %10000000 ; Day count exceeded 16383
+	and RTC_RESET
 	jp nz, .PrintTimeNotSet
 	call UpdateTime
 	hlcoord 1, 13

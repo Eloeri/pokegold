@@ -367,7 +367,7 @@ HandleBerserkGene:
 	bit SUBSTATUS_CONFUSED, a
 	ret nz
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld de, ANIM_CONFUSED
 	call Call_PlayBattleAnim_OnlyIfVisible
 	call SwitchTurnCore
@@ -972,7 +972,7 @@ ResidualDamage:
 	pop de
 
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	call Call_PlayBattleAnim_OnlyIfVisible
 	call GetEighthMaxHP
 	ld de, wPlayerToxicCount
@@ -1012,7 +1012,7 @@ ResidualDamage:
 
 	call SwitchTurnCore
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld de, ANIM_SAP
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP
 	call GetBattleVar
@@ -1037,7 +1037,7 @@ ResidualDamage:
 	bit SUBSTATUS_NIGHTMARE, [hl]
 	jr z, .not_nightmare
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld de, ANIM_IN_NIGHTMARE
 	call Call_PlayBattleAnim_OnlyIfVisible
 	call GetQuarterMaxHP
@@ -1055,7 +1055,7 @@ ResidualDamage:
 	jr z, .not_cursed
 
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld de, ANIM_IN_NIGHTMARE
 	call Call_PlayBattleAnim_OnlyIfVisible
 	call GetQuarterMaxHP
@@ -1197,7 +1197,7 @@ HandleWrap:
 
 	call SwitchTurnCore
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld [wFXAnimID + 1], a
 	predef PlayBattleAnim
 	call SwitchTurnCore
@@ -1687,7 +1687,7 @@ HandleWeather:
 
 	call SwitchTurnCore
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld de, ANIM_IN_SANDSTORM
 	call Call_PlayBattleAnim
 	call SwitchTurnCore
@@ -3285,7 +3285,7 @@ ShowSetEnemyMonAndSendOutAnimation:
 	call GetEnemyMonFrontpic
 
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld [wBattleAnimParam], a
 	call SetEnemyTurn
 	ld de, ANIM_SEND_OUT_MON
@@ -3742,7 +3742,7 @@ SendOutPlayerMon:
 	ld [wEnemyWrapCount], a
 	call SetPlayerTurn
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld [wBattleAnimParam], a
 	ld de, ANIM_SEND_OUT_MON
 	call Call_PlayBattleAnim
@@ -3863,7 +3863,7 @@ PursuitSwitch:
 
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVarAddr
-	ld a, $ff
+	ld a, CANNOT_MOVE
 	ld [hl], a
 
 	pop af
@@ -3922,7 +3922,7 @@ RecallPlayerMon:
 	push af
 	xor a
 	ldh [hBattleTurn], a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld de, ANIM_RETURN_MON
 	call Call_PlayBattleAnim
 	pop af
@@ -4054,7 +4054,7 @@ ItemRecoveryAnim:
 	ld [wFXAnimID], a
 	call SwitchTurnCore
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld [wFXAnimID + 1], a
 	predef PlayBattleAnim
 	call SwitchTurnCore
@@ -5044,15 +5044,15 @@ MoveSelectionScreen:
 	ld c, STATICMENU_ENABLE_LEFT_RIGHT | STATICMENU_ENABLE_START | STATICMENU_WRAP
 	ld a, [wMoveSelectionMenuType]
 	dec a
-	ld b, D_DOWN | D_UP | A_BUTTON
+	ld b, PAD_DOWN | PAD_UP | PAD_A
 	jr z, .okay
 	dec a
-	ld b, D_DOWN | D_UP | A_BUTTON | B_BUTTON
+	ld b, PAD_DOWN | PAD_UP | PAD_A | PAD_B
 	jr z, .okay
 	ld a, [wLinkMode]
 	cp LINK_COLOSSEUM
 	jr z, .okay
-	ld b, D_DOWN | D_UP | A_BUTTON | B_BUTTON | SELECT
+	ld b, PAD_DOWN | PAD_UP | PAD_A | PAD_B | PAD_SELECT
 
 .okay
 	ld a, b
@@ -5089,11 +5089,11 @@ MoveSelectionScreen:
 	ld a, $1
 	ldh [hBGMapMode], a
 	call ScrollingMenuJoypad
-	bit D_UP_F, a
+	bit B_PAD_UP, a
 	jp nz, .pressed_up
-	bit D_DOWN_F, a
+	bit B_PAD_DOWN, a
 	jp nz, .pressed_down
-	bit SELECT_F, a
+	bit B_PAD_SELECT, a
 	jp nz, .pressed_select
 	bit B_BUTTON_F, a
 	; A button
@@ -6591,7 +6591,7 @@ _BattleRandom::
 	ld [wLinkBattleRNCount], a
 
 ; If we haven't hit the end yet, we're good
-	cp 10 - 1 ; Exclude last value. See the closing comment
+	cp SERIAL_RNS_LENGTH - 1 ; Exclude last value. See the closing comment
 	ld a, [hl]
 	pop bc
 	pop hl
@@ -6607,7 +6607,7 @@ _BattleRandom::
 	xor a
 	ld [wLinkBattleRNCount], a
 	ld hl, wLinkBattleRNs
-	ld b, 10 ; number of seeds
+	ld b, SERIAL_RNS_LENGTH ; number of seeds
 
 ; Generate next number in the sequence for each seed
 ; a[n+1] = (a[n] * 5 + 1) % 256
@@ -7669,7 +7669,7 @@ StartBattle:
 	call ShowLinkBattleParticipants
 	farcall ClearBattleRAM
 	ld hl, rLCDC
-	res rLCDC_WINDOW_TILEMAP, [hl] ; select vBGMap0/vBGMap2
+	res B_LCDC_WIN_MAP, [hl] ; select vBGMap0/vBGMap2
 	ld a, [wOtherTrainerClass]
 	and a
 	jr nz, .trainer
@@ -7690,7 +7690,7 @@ StartBattle:
 	xor a
 	ldh [hBGMapMode], a
 	ld hl, rLCDC
-	set rLCDC_WINDOW_TILEMAP, [hl] ; select vBGMap1/vBGMap3
+	set B_LCDC_WIN_MAP, [hl] ; select vBGMap1/vBGMap3
 	call EmptyBattleTextbox
 	hlcoord 9, 7
 	lb bc, 5, 11
@@ -7984,7 +7984,7 @@ _DisplayLinkRecord:
 	call CloseSRAM
 	hlcoord 0, 0, wAttrmap
 	xor a
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	call ByteFill
 	call WaitBGMap2
 	ld b, SCGB_DIPLOMA
@@ -8476,13 +8476,13 @@ InitBattleDisplay:
 	call OpenSRAM
 
 	ld hl, sDecompressScratch
-	ld bc, BG_MAP_WIDTH * BG_MAP_HEIGHT
+	ld bc, TILEMAP_AREA
 	ld a, " "
 	call ByteFill
 
 	ld de, sDecompressScratch
 	hlbgcoord 0, 0
-	lb bc, BANK(@), (BG_MAP_WIDTH * BG_MAP_HEIGHT) / LEN_2BPP_TILE
+	lb bc, BANK(@), (TILEMAP_AREA) / TILE_SIZE
 	call Request2bpp
 
 	call CloseSRAM
@@ -8593,7 +8593,7 @@ BattleStartMessage:
 	jr nc, .not_shiny
 
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	ld a, 1
 	ldh [hBattleTurn], a
 	ld a, 1

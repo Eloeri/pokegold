@@ -106,7 +106,7 @@ LoadOverworldTilemap::
 
 	ld a, "■"
 	hlcoord 0, 0
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
+	ld bc, SCREEN_AREA
 	call ByteFill
 
 	ld a, BANK(_LoadOverworldTilemap)
@@ -276,7 +276,7 @@ LoadMapTimeOfDay::
 	ld [hli], a
 	dec c
 	jr nz, .column
-	ld bc, BG_MAP_WIDTH - SCREEN_WIDTH
+	ld bc, TILEMAP_WIDTH - SCREEN_WIDTH
 	add hl, bc
 	pop bc
 	dec b
@@ -1065,7 +1065,7 @@ endr
 GetMapScreenCoords::
 	ld hl, wOverworldMapBlocks
 	ld a, [wXCoord]
-	bit 0, a
+	bit 0, a ; even or odd?
 	jr nz, .odd_x
 ; even x
 	srl a
@@ -1083,7 +1083,7 @@ GetMapScreenCoords::
 	ld c, a
 	ld b, 0
 	ld a, [wYCoord]
-	bit 0, a
+	bit 0, a ; even or odd?
 	jr nz, .odd_y
 ; even y
 	srl a
@@ -1418,7 +1418,7 @@ ExecuteCallbackScript::
 	ld hl, wScriptFlags
 	ld a, [hl]
 	push af
-	set 1, [hl]
+	set UNUSED_SCRIPT_FLAG_1, [hl]
 	farcall EnableScriptMode
 	farcall ScriptEvents
 	pop af
@@ -1582,7 +1582,7 @@ ScrollMapDown::
 	ld l, a
 	ld a, [wBGMapAnchor + 1]
 	ld h, a
-	ld bc, BG_MAP_WIDTH tiles
+	ld bc, TILEMAP_WIDTH tiles
 	add hl, bc
 ; cap d at HIGH(vBGMap0)
 	ld a, h
@@ -1667,7 +1667,7 @@ UpdateBGMapRow::
 	push de
 	call .iteration
 	pop de
-	ld a, BG_MAP_WIDTH
+	ld a, TILEMAP_WIDTH
 	add e
 	ld e, a
 
@@ -1701,7 +1701,7 @@ UpdateBGMapColumn::
 	ld [hli], a
 	ld a, d
 	ld [hli], a
-	ld a, BG_MAP_WIDTH
+	ld a, TILEMAP_WIDTH
 	add e
 	ld e, a
 	jr nc, .skip
@@ -1957,7 +1957,7 @@ GetMovementPermissions::
 
 .ok_down
 	ld hl, wTilePermissions
-	set 3, [hl]
+	set RIGHT, [hl]
 	ret
 
 .Up:
@@ -1974,7 +1974,7 @@ GetMovementPermissions::
 
 .ok_up
 	ld hl, wTilePermissions
-	set 3, [hl]
+	set RIGHT, [hl]
 	ret
 
 .Right:
@@ -1991,7 +1991,7 @@ GetMovementPermissions::
 
 .ok_right
 	ld hl, wTilePermissions
-	set 3, [hl]
+	set RIGHT, [hl]
 	ret
 
 .Left:
@@ -2008,7 +2008,7 @@ GetMovementPermissions::
 
 .ok_left
 	ld hl, wTilePermissions
-	set 3, [hl]
+	set RIGHT, [hl]
 	ret
 
 .CheckHiNybble:
@@ -2318,7 +2318,7 @@ ReturnToMapWithSpeechTextbox::
 ReloadTilesetAndPalettes::
 	call DisableLCD
 	call ClearSprites
-	farcall _RefreshSprites
+	farcall LoadStandingSpritesGFX
 	call LoadStandardFont
 	call LoadFontsExtra
 	ldh a, [hROMBank]

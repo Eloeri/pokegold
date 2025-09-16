@@ -327,7 +327,7 @@ ConfirmContinue:
 
 Continue_CheckRTC_RestartClock:
 	call CheckRTCStatus
-	and %10000000 ; Day count exceeded 16383
+	and RTC_RESET
 	jr z, .pass
 	farcall RestartClock
 	ld a, c
@@ -358,7 +358,7 @@ FinishContinueFunction:
 
 DisplaySaveInfoOnContinue:
 	call CheckRTCStatus
-	and %10000000
+	and RTC_RESET
 	jr z, .clock_ok
 	lb de, 4, 8
 	call DisplayContinueDataWithRTCError
@@ -867,7 +867,7 @@ StartTitleScreen:
 	call ClearBGPalettes
 
 	ld hl, rLCDC
-	res rLCDC_SPRITE_SIZE, [hl] ; 8x8
+	res B_LCDC_OBJ_SIZE, [hl] ; 8x8
 	call ClearTilemap
 	xor a
 	ldh [hLCDCPointer], a
@@ -901,7 +901,7 @@ INCLUDE "engine/movie/title.asm"
 RunTitleScreen:
 	call ScrollTitleScreenClouds
 	ld a, [wJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	jr nz, .done_title
 	call TitleScreenScene
 	ld a, $1
@@ -988,19 +988,19 @@ TitleScreenMain:
 	call GetJoypad
 	ld hl, hJoyDown
 	ld a, [hl]
-	and D_UP + B_BUTTON + SELECT
-	cp  D_UP + B_BUTTON + SELECT
+	and PAD_UP + PAD_B + PAD_SELECT
+	cp  PAD_UP + PAD_B + PAD_SELECT
 	jr z, .delete_save_data
 
 ; Clock can be reset by pressing Down + B + Select.
 	ld a, [hl]
-	and D_DOWN + B_BUTTON + SELECT
-	cp  D_DOWN + B_BUTTON + SELECT
+	and PAD_DOWN + PAD_B + PAD_SELECT
+	cp  PAD_DOWN + PAD_B + PAD_SELECT
 	jr z, .reset_clock
 
 ; Press Start or A to start the game.
 	ld a, [hl]
-	and START | A_BUTTON
+	and PAD_START | PAD_A
 	jr nz, .incave
 	ret
 
@@ -1016,7 +1016,7 @@ TitleScreenMain:
 
 ; Return to the intro sequence.
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 .end
@@ -1041,7 +1041,7 @@ TitleScreenMain:
 
 ; Return to the intro sequence.
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 TitleScreenEnd:
@@ -1059,7 +1059,7 @@ TitleScreenEnd:
 
 ; Back to the intro.
 	ld hl, wJumptableIndex
-	set 7, [hl]
+	set JUMPTABLE_EXIT_F, [hl]
 	ret
 
 DeleteSaveData:
@@ -1071,7 +1071,7 @@ ResetClock:
 	jp Init
 
 UpdateTitleTrailSprite:
-	; If bit 0 or 1 of [wTitleScreenTimer] is set, we don't need to be here.
+	; Only update every 4 seconds, when the low 2 bits of [wTitleScreenTimer] are 0.
 	ld a, [wTitleScreenTimer]
 	and %00000011
 	ret nz
@@ -1085,7 +1085,7 @@ IF DEF(_GOLD)
 	add hl, hl
 	ld de, .TitleTrailCoords
 	add hl, de
-	; If bit 2 of [wTitleScreenTimer] is set, get the second coords; else, get the first coords
+	; Every 8 seconds (i.e. every other update), get the second coords; else, get the first coords
 	ld a, [wTitleScreenTimer]
 	and %00000100
 	srl a

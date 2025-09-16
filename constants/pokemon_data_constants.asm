@@ -116,10 +116,17 @@ DEF PARTY_LENGTH EQU 6
 
 ; boxes
 DEF MONS_PER_BOX EQU 20
+DEF MONS_PER_BOX_JP EQU 30
 ; box: count, species, mons, OTs, nicknames, padding
 DEF BOX_LENGTH EQU 1 + MONS_PER_BOX + 1 + (BOXMON_STRUCT_LENGTH + NAME_LENGTH + MON_NAME_LENGTH) * MONS_PER_BOX + 2 ; $450
 DEF NUM_BOXES EQU 14
-DEF NUM_BOXES_JAPANESE EQU 9
+DEF NUM_BOXES_JP EQU 9
+
+rsreset
+DEF BOXLIST_SPECIES rb
+DEF BOXLIST_BOXNUM  rb
+DEF BOXLIST_INDEX   rb
+DEF BOXLIST_SIZE EQU _RS
 
 ; hall of fame
 ; hof_mon: species, id, dvs, level, nicknames
@@ -166,10 +173,9 @@ DEF NUM_ROAMMON_MAPS EQU 16 ; RoamMaps table size (see data/wild/roammon_maps.as
 	const TREEMON_SET_FOREST
 	const TREEMON_SET_CANYON
 	const TREEMON_SET_ROCK
-DEF NUM_TREEMON_SETS EQU const_value
-; last two are unused/ignored
 	const TREEMON_SET_UNUSED
 	const TREEMON_SET_CITY
+DEF NUM_TREEMON_SETS EQU const_value
 
 ; treemon scores
 	const_def
