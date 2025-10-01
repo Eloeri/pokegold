@@ -37,6 +37,12 @@ MoveRelearner:
 	cp EGG
 	jr z, .is_an_egg
 
+	; Checks if the current selection is not a Pokémon. Relative jump to
+	; the ".not_a_pokemon" local jump if so and continue if not.
+	; Prevents continuing if glitched Pokémon are selected.
+	call IsAPokemon
+	jr c, .not_a_pokemon
+	
 	; Checks for any moves that can be learned. Relative
 	; jump to the ".no_moves_to_learn" local jump if
 	; there are none and continue if there are.

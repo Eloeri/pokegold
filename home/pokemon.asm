@@ -1,3 +1,20 @@
+IsAPokemon::
+; Return carry if species a is not a Pokemon.
+	and a
+	jr z, .NotAPokemon
+	cp EGG
+	jr z, .Pokemon
+	cp NUM_POKEMON + 1
+	jr c, .Pokemon
+
+.NotAPokemon:
+	scf
+	ret
+
+.Pokemon:
+	and a
+	ret
+
 DrawBattleHPBar::
 ; Draw an HP bar d tiles long at hl
 ; Fill it up to e pixels
@@ -203,14 +220,6 @@ Print8BitNumLeftAlign::
 	ld de, wTextDecimalByte
 	ld b, PRINTNUM_LEFTALIGN | 1
 	jp PrintNum
-
-GetNthMove:: ; unreferenced
-	ld hl, wListMoves_MoveIndicesBuffer
-	ld c, a
-	ld b, 0
-	add hl, bc
-	ld a, [hl]
-	ret
 
 GetBaseData::
 	push bc
