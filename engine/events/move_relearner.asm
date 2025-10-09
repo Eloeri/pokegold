@@ -191,9 +191,9 @@ MoveCost:
 ; a zero flag if there are none.
 GetRemindableMoves:
 
-	; The "wCurItem" wram label is being used to store
+	; The "wd002" wram label is being used to store
 	; the moves for placement in the move list.
-	ld hl, wCurItem
+	ld hl, wd002
 	xor a
 	ld [hli], a
 	ld [hl], $ff
@@ -214,10 +214,10 @@ GetRemindableMoves:
 	ld [wCurPartyLevel], a
 
 	; The "b" register will contain the number of
-	; moves in the move list and "wCurItem + 1"
+	; moves in the move list and "wd002 + 1"
 	; is where the move list begins.
 	ld b, 0
-	ld de, wCurItem + 1
+	ld de, wd002 + 1
 
 	; Retrieves the currently selected Pokémon's evolution
 	; and attack address from the "EvosAttacksPointers"
@@ -286,14 +286,14 @@ GetRemindableMoves:
 	jr .loop_moves
 
 ; Adds all the possible moves the currently
-; selected Pokémon can learn into "wCurItem".
+; selected Pokémon can learn into "wd002".
 ; Which is the move list.
 .done
 	pop bc
 	pop af
 	ld [wCurPartySpecies], a
 	ld a, b
-	ld [wCurItem], a
+	ld [wd002], a
 	and a
 	ret
 
@@ -302,7 +302,7 @@ GetRemindableMoves:
 ; duplicate entries in the move list.
 CheckAlreadyInList:
 	push hl
-	ld hl, wCurItem + 1
+	ld hl, wd002 + 1
 .loop
 	ld a, [hli]
 	inc a
@@ -344,8 +344,8 @@ CheckPokemonAlreadyKnowsMove:
 	ret
 
 ; Creates a scrolling menu and sets up the menu gui.
-; The number of items is stored in "wCurItem"
-; The list of items is stored in "wCurItem + 1"
+; The number of items is stored in "wd002"
+; The list of items is stored in "wd002 + 1"
 ChooseMoveToLearn:
 	farcall FadeOutToWhite
 	farcall BlankScreen
@@ -442,7 +442,7 @@ ChooseMoveToLearn:
 ; details will be displayed.
 
 ; This menu is populated with an item and three functions.
-; The item is "wCurItem".
+; The item is "wd002".
 ; Function 1 is the ".print_move_name" local jump.
 ; Function 2 is the ".print_pp" local jump.
 ; Function 3 is the ".print_move_details" local jump.
@@ -450,14 +450,14 @@ ChooseMoveToLearn:
 	db SCROLLINGMENU_DISPLAY_ARROWS | SCROLLINGMENU_ENABLE_FUNCTION3
 	db 4, SCREEN_WIDTH + 2
 	db SCROLLINGMENU_ITEMS_NORMAL
-	dba  wCurItem
+	dba  wd002
 	dba .print_move_name
 	dba .print_pp
 	dba .print_move_details
 
 ; This prints the move's name in the menu.
 ; This is purely visual as the actual
-; entry is stored in "wCurItem".
+; entry is stored in "wd002".
 .print_move_name
 	push de
 	ld a, [wMenuSelection]

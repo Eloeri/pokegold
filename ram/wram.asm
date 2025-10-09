@@ -1827,7 +1827,7 @@ wCurPartyMon::
 ; index of mon's party location (0-5)
 	db
 
-	ds 1
+wd002:: ds 1 ; d002
 
 wWhichHPBar::
 ; 0: Enemy
