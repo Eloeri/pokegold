@@ -220,32 +220,32 @@ _BallDodgedText::
 
 	para "This #MON"
 	line "can't be caught!"
-	prompt
+	autodone
 
 _BallMissedText::
 	text "You missed the"
 	line "#MON!"
-	prompt
+	autodone
 
 _BallBrokeFreeText::
 	text "Oh no! The #MON"
 	line "broke free!"
-	prompt
+	autodone
 
 _BallAppearedCaughtText::
 	text "Aww! It appeared"
 	line "to be caught!"
-	prompt
+	autodone
 
 _BallAlmostHadItText::
 	text "Aargh!"
 	line "Almost had it!"
-	prompt
+	autodone
 
 _BallSoCloseText::
 	text "Shoot! It was so"
 	line "close too!"
-	prompt
+	autodone
 
 Text_BallCaught::
 	text "Gotcha! @"
@@ -265,7 +265,7 @@ _BallSentToPCText::
 	text_ram wMonOrItemNameBuffer
 	text " was"
 	line "sent to BILL's PC."
-	prompt
+	autodone
 
 _NewDexDataText::
 	text_ram wEnemyMonNickname
@@ -289,18 +289,18 @@ _ItemStatRoseText::
 	line "@"
 	text_ram wStringBuffer2
 	text " rose."
-	prompt
+	autodone
 
 _ItemCantUseOnMonText::
 	text "That can't be used"
 	line "on this #MON."
-	prompt
+	autodone
 
 _RepelUsedEarlierIsStillInEffectText::
 	text "The REPEL used"
 	line "earlier is still"
 	cont "in effect."
-	prompt
+	autodone
 
 _PlayedFluteText::
 	text "Played the #"
@@ -308,12 +308,12 @@ _PlayedFluteText::
 
 	para "Now, that's a"
 	line "catchy tune!"
-	prompt
+	autodone
 
 _FluteWakeUpText::
 	text "All sleeping"
 	line "#MON woke up."
-	prompt
+	autodone
 
 Text_PlayedPokeFlute::
 	text "<PLAYER> played the"
@@ -344,17 +344,17 @@ _PPIsMaxedOutText::
 	text_ram wStringBuffer2
 	text "'s PP"
 	line "is maxed out."
-	prompt
+	autodone
 
 _PPsIncreasedText::
 	text_ram wStringBuffer2
 	text "'s PP"
 	line "increased."
-	prompt
+	autodone
 
 _PPRestoredText::
 	text "PP was restored."
-	prompt
+	autodone
 
 _SentTrophyHomeText::
 	text "There was a trophy"
@@ -366,59 +366,59 @@ _SentTrophyHomeText::
 	text_ram wPlayerName
 	text " sent the"
 	line "trophy home."
-	prompt
+	autodone
 
 _ItemLooksBitterText::
 	text "It looks bitter…"
-	prompt
+	autodone
 
 _ItemCantUseOnEggText::
 	text "That can't be used"
 	line "on an EGG."
-	prompt
+	autodone
 
 _ItemOakWarningText::
 	text "OAK: <PLAYER>!"
 	line "This isn't the"
 	cont "time to use that!"
-	prompt
+	autodone
 
 _ItemBelongsToSomeoneElseText::
 	text "That belongs to"
 	line "someone else!"
-	prompt
+	autodone
 
 _ItemWontHaveEffectText::
 	text "It won't have any"
 	line "effect."
-	prompt
+	autodone
 
 _BallBlockedText::
 	text "The trainer"
 	line "blocked the BALL!"
-	prompt
+	autodone
 
 _BallDontBeAThiefText::
 	text "Don't be a thief!"
-	prompt
+	autodone
 
 _NoCyclingText::
 	text "Cycling isn't"
 	line "allowed here."
-	prompt
+	autodone
 
 _ItemCantGetOnText::
 	text "Can't get on your"
 	line "@"
 	text_ram wStringBuffer1
 	text " now."
-	prompt
+	autodone
 
 _BallBoxFullText::
 	text "The #MON BOX"
 	line "is full. That"
 	cont "can't be used now."
-	prompt
+	autodone
 
 _ItemUsedText::
 	text "<PLAYER> used the"
@@ -430,12 +430,12 @@ _ItemUsedText::
 _ExpShareToggleOn::
 	text "The EXP.SHARE was"
 	line "turned on."
-	prompt
+	autodone
 
 _ExpShareToggleOff::
 	text "The EXP.SHARE was"
 	line "turned off."
-	prompt
+	autodone
 
 _KnowsMoveText::
 	text_ram wStringBuffer1
@@ -443,7 +443,7 @@ _KnowsMoveText::
 	line "@"
 	text_ram wStringBuffer2
 	text "."
-	prompt
+	autodone
 
 _MoveKnowsOneText::
 	text "That #MON knows"
@@ -475,7 +475,7 @@ _DeleterNoComeAgainText::
 _DeleterAskWhichMoveText::
 	text "Which move should"
 	line "it forget, then?"
-	prompt
+	autodone
 
 _DeleterIntroText::
 	text "Um… Oh, yes, I'm"

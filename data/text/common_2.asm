@@ -1,12 +1,12 @@
 _CantSurfText::
 	text "You can't SURF"
 	line "here."
-	prompt
+	autodone
 
 _AlreadySurfingText::
 	text "You're already"
 	line "SURFING."
-	prompt
+	autodone
 
 _AskSurfText::
 	text "The water is calm."
@@ -60,7 +60,7 @@ _CantUseTeleportText::
 _AlreadyUsingStrengthText::
 	text "A #MON is using"
 	line "STRENGTH already."
-	prompt
+	autodone
 
 _UseStrengthText::
 	text_ram wStringBuffer2
@@ -72,7 +72,7 @@ _MoveBoulderText::
 	text_ram wStringBuffer1
 	text " can"
 	line "move boulders."
-	prompt
+	autodone
 
 _AskStrengthText::
 	text "A #MON may be"
@@ -96,7 +96,7 @@ _UseWhirlpoolText::
 	text_ram wStringBuffer2
 	text " used"
 	line "WHIRLPOOL!"
-	prompt
+	autodone
 
 _MayPassWhirlpoolText::
 	text "It's a vicious"
@@ -118,7 +118,7 @@ _UseHeadbuttText::
 	text_ram wStringBuffer2
 	text " did a"
 	line "HEADBUTT!"
-	prompt
+	autodone
 
 _HeadbuttNothingText::
 	text "Nope. Nothing…"
@@ -136,7 +136,7 @@ _UseRockSmashText::
 	text_ram wStringBuffer2
 	text " used"
 	line "ROCK SMASH!"
-	prompt
+	autodone
 
 _MaySmashText::
 	text "A #MON may be"
@@ -154,16 +154,16 @@ _AskRockSmashText::
 _RodBiteText::
 	text "Oh!"
 	line "A bite!"
-	prompt
+	autodone
 
 _RodNothingText::
 	text "Not even a nibble!"
-	prompt
+	autodone
 
 _UnusedNothingHereText::
 	text "Looks like there's"
 	line "nothing here."
-	prompt
+	autodone
 
 _CantGetOffBikeText::
 	text "You can't get off"
@@ -221,18 +221,18 @@ _ItemfinderItemNearbyText::
 	text "Yes! ITEMFINDER"
 	line "indicates there's"
 	cont "an item nearby."
-	prompt
+	autodone
 
 _ItemfinderNopeText::
 	text "Nope! ITEMFINDER"
 	line "isn't responding."
-	prompt
+	autodone
 
 _PoisonFaintText::
 	text_ram wStringBuffer3
 	text_start
 	line "fainted!"
-	prompt
+	autodone
 
 _PoisonWhiteoutText::
 	text "<PLAYER> is out of"
@@ -240,7 +240,7 @@ _PoisonWhiteoutText::
 
 	para "<PLAYER> whited"
 	line "out!"
-	prompt
+	autodone
 
 _UseSweetScentText::
 	text_ram wStringBuffer3
@@ -269,7 +269,7 @@ _UseSacredAshText::
 _AnEggCantHoldAnItemText::
 	text "An EGG can't hold"
 	line "an item."
-	prompt
+	autodone
 
 _PackNoItemText::
 	text "No items."
@@ -300,12 +300,12 @@ _OakThisIsntTheTimeText::
 	text "OAK: <PLAYER>!"
 	line "This isn't the"
 	cont "time to use that!"
-	prompt
+	autodone
 
 _YouDontHaveAMonText::
 	text "You don't have a"
 	line "#MON!"
-	prompt
+	autodone
 
 _RegisteredItemText::
 	text "Registered the"
@@ -331,7 +331,7 @@ _PackEmptyText::
 _YouCantUseItInABattleText::
 	text "You can't use it"
 	line "in a battle."
-	prompt
+	autodone
 
 _ActorNameText::
 	text "<USER>@@"
@@ -383,11 +383,11 @@ Text_BattleEffectActivate::
 _BattleStatWentWayUpText::
 	text_pause
 	text "<SCROLL>went way up!"
-	prompt
+	autodone
 
 _BattleStatWentUpText::
 	text " went up!"
-	prompt
+	autodone
 
 Text_BattleFoeEffectActivate::
 	text "<TARGET>'s"
@@ -400,11 +400,11 @@ Text_BattleFoeEffectActivate::
 _BattleStatSharplyFellText::
 	text_pause
 	text "<SCROLL>sharply fell!"
-	prompt
+	autodone
 
 _BattleStatFellText::
 	text " fell!"
-	prompt
+	autodone
 
 Text_BattleUser::
 	text "<USER>@"
@@ -413,32 +413,32 @@ Text_BattleUser::
 _BattleMadeWhirlwindText::
 	text_start
 	line "made a whirlwind!"
-	prompt
+	autodone
 
 _BattleTookSunlightText::
 	text_start
 	line "took in sunlight!"
-	prompt
+	autodone
 
 _BattleLoweredHeadText::
 	text_start
 	line "lowered its head!"
-	prompt
+	autodone
 
 _BattleGlowingText::
 	text_start
 	line "is glowing!"
-	prompt
+	autodone
 
 _BattleFlewText::
 	text_start
 	line "flew up high!"
-	prompt
+	autodone
 
 _BattleDugText::
 	text_start
 	line "dug a hole!"
-	prompt
+	autodone
 
 Text_BreedHuh::
 	text "Huh?"
@@ -484,35 +484,35 @@ _LeftWithDayCareManText::
 _BreedBrimmingWithEnergyText::
 	text "It's brimming with"
 	line "energy."
-	prompt
+	autodone
 
 _BreedNoInterestText::
 	text "It has no interest"
 	line "in @"
 	text_ram wStringBuffer1
 	text "."
-	prompt
+	autodone
 
 _BreedAppearsToCareForText::
 	text "It appears to care"
 	line "for @"
 	text_ram wStringBuffer1
 	text "."
-	prompt
+	autodone
 
 _BreedFriendlyText::
 	text "It's friendly with"
 	line "@"
 	text_ram wStringBuffer1
 	text "."
-	prompt
+	autodone
 
 _BreedShowsInterestText::
 	text "It shows interest"
 	line "in @"
 	text_ram wStringBuffer1
 	text "."
-	prompt
+	autodone
 
 _EmptyMailboxText::
 	text "There's no MAIL"
@@ -1301,7 +1301,7 @@ _AnotherSaveFileText::
 _SaveFileCorruptedText::
 	text "The save file is"
 	line "corrupted!"
-	prompt
+	autodone
 
 _ChangeBoxSaveText::
 	text "When you change a"

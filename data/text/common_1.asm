@@ -156,25 +156,25 @@ _OakTimeIsItText::
 _EnemyWithdrewText::
 	text "<ENEMY>"
 	line "withdrew"
-	cont "@"
+	scroll "@"
 	text_ram wEnemyMonNickname
 	text "!"
-	prompt
+	autodone
 
 _EnemyUsedOnText::
 	text "<ENEMY>"
 	line "used @"
 	text_ram wMonOrItemNameBuffer
 	text_start
-	cont "on @"
+	scroll "on @"
 	text_ram wEnemyMonNickname
 	text "!"
-	prompt
+	autodone
 
 _ThatCantBeUsedRightNowText:: ; unreferenced
 	text "That can't be used"
 	line "right now."
-	prompt
+	autodone
 
 _ThatItemCantBePutInThePackText:: ; unreferenced
 	text "That item can't be"
@@ -196,7 +196,7 @@ _RemainingTimeText:: ; unreferenced
 _YourMonsHPWasHealedText:: ; unreferenced
 	text "Your #MON's HP"
 	line "was healed."
-	prompt
+	autodone
 
 _WarpingText:: ; unreferenced
 	text "Warping…"
@@ -217,12 +217,12 @@ _WillYouPlayWithMonText:: ; unreferenced
 _YouNeedTwoMonForBreedingText:: ; unreferenced
 	text "You need two #-"
 	line "MON for breeding."
-	prompt
+	autodone
 
 _BreedingIsNotPossibleText:: ; unreferenced
 	text "Breeding is not"
 	line "possible."
-	prompt
+	autodone
 
 _CompatibilityShouldTheyBreedText:: ; unreferenced
 	text "The compatibility"
@@ -289,7 +289,7 @@ _EnterTheAmountText:: ; unreferenced
 _NothingToChooseText::
 	text "There's nothing to"
 	line "choose."
-	prompt
+	autodone
 
 _WhichSidePutOnText::
 	text "Which side do you"
@@ -306,19 +306,19 @@ _PutAwayTheDecoText::
 	line "@"
 	text_ram wStringBuffer3
 	text "."
-	prompt
+	autodone
 
 _NothingToPutAwayText::
 	text "There's nothing to"
 	line "put away."
-	prompt
+	autodone
 
 _SetUpTheDecoText::
 	text "Set up the"
 	line "@"
 	text_ram wStringBuffer3
 	text "."
-	prompt
+	autodone
 
 _PutAwayAndSetUpText::
 	text "Put away the"
@@ -335,7 +335,7 @@ _PutAwayAndSetUpText::
 _AlreadySetUpText::
 	text "That's already set"
 	line "up."
-	prompt
+	autodone
 
 _LookTownMapText::
 	text "It's the TOWN MAP."
@@ -1295,22 +1295,22 @@ _MomSaveMoneyText::
 _MomHaventSavedThatMuchText::
 	text "You haven't saved"
 	line "that much."
-	prompt
+	autodone
 
 _MomNotEnoughRoomInWalletText::
 	text "You can't take"
 	line "that much."
-	prompt
+	autodone
 
 _MomInsufficientFundsInWalletText::
 	text "You don't have"
 	line "that much."
-	prompt
+	autodone
 
 _MomNotEnoughRoomInBankText::
 	text "You can't save"
 	line "that much."
-	prompt
+	autodone
 
 _MomStartSavingMoneyText::
 	text "OK, I'll save your"
@@ -1483,16 +1483,16 @@ _BackAlreadyText::
 _HaveNoRoomText::
 	text "You have no room"
 	line "for it."
-	prompt
+	autodone
 
 _NotEnoughMoneyText::
 	text "You don't have"
 	line "enough money."
-	prompt
+	autodone
 
 _OhFineThenText::
 	text "Oh, fine then."
-	prompt
+	autodone
 
 _ComeAgainText::
 	text "Come again."
