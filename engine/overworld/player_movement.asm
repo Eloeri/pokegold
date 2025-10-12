@@ -353,6 +353,16 @@ DoPlayerMovement::
 	and a
 	jr nz, .ExitWater
 
+	ldh a, [hJoypadDown]
+	and B_BUTTON
+	cp B_BUTTON
+	jr nz, .swimslow
+	ld a, STEP_BIKE
+	call .DoStep
+	scf
+	ret
+
+.swimslow
 	ld a, STEP_WALK
 	call .DoStep
 	scf
