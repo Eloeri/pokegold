@@ -308,12 +308,12 @@ _PlayedFluteText::
 
 	para "Now, that's a"
 	line "catchy tune!"
-	autodone
+	prompt
 
 _FluteWakeUpText::
 	text "All sleeping"
 	line "#MON woke up."
-	autodone
+	prompt
 
 Text_PlayedPokeFlute::
 	text "<PLAYER> played the"
@@ -344,17 +344,17 @@ _PPIsMaxedOutText::
 	text_ram wStringBuffer2
 	text "'s PP"
 	line "is maxed out."
-	autodone
+	prompt
 
 _PPsIncreasedText::
 	text_ram wStringBuffer2
 	text "'s PP"
 	line "increased."
-	autodone
+	prompt
 
 _PPRestoredText::
 	text "PP was restored."
-	autodone
+	prompt
 
 _SentTrophyHomeText::
 	text "There was a trophy"
@@ -366,7 +366,7 @@ _SentTrophyHomeText::
 	text_ram wPlayerName
 	text " sent the"
 	line "trophy home."
-	autodone
+	prompt
 
 _ItemLooksBitterText::
 	text "It looks bitter…"
@@ -430,12 +430,12 @@ _ItemUsedText::
 _ExpShareToggleOn::
 	text "The EXP.SHARE was"
 	line "turned on."
-	autodone
+	prompt
 
 _ExpShareToggleOff::
 	text "The EXP.SHARE was"
 	line "turned off."
-	autodone
+	prompt
 
 _KnowsMoveText::
 	text_ram wStringBuffer1

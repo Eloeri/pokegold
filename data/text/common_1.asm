@@ -1295,22 +1295,22 @@ _MomSaveMoneyText::
 _MomHaventSavedThatMuchText::
 	text "You haven't saved"
 	line "that much."
-	autodone
+	prompt
 
 _MomNotEnoughRoomInWalletText::
 	text "You can't take"
 	line "that much."
-	autodone
+	prompt
 
 _MomInsufficientFundsInWalletText::
 	text "You don't have"
 	line "that much."
-	autodone
+	prompt
 
 _MomNotEnoughRoomInBankText::
 	text "You can't save"
 	line "that much."
-	autodone
+	prompt
 
 _MomStartSavingMoneyText::
 	text "OK, I'll save your"
@@ -1483,16 +1483,16 @@ _BackAlreadyText::
 _HaveNoRoomText::
 	text "You have no room"
 	line "for it."
-	autodone
+	prompt
 
 _NotEnoughMoneyText::
 	text "You don't have"
 	line "enough money."
-	autodone
+	prompt
 
 _OhFineThenText::
 	text "Oh, fine then."
-	autodone
+	prompt
 
 _ComeAgainText::
 	text "Come again."

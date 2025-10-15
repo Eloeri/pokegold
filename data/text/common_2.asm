@@ -1,12 +1,12 @@
 _CantSurfText::
 	text "You can't SURF"
 	line "here."
-	autodone
+	prompt
 
 _AlreadySurfingText::
 	text "You're already"
 	line "SURFING."
-	autodone
+	prompt
 
 _AskSurfText::
 	text "The water is calm."
@@ -60,7 +60,7 @@ _CantUseTeleportText::
 _AlreadyUsingStrengthText::
 	text "A #MON is using"
 	line "STRENGTH already."
-	autodone
+	prompt
 
 _UseStrengthText::
 	text_ram wStringBuffer2
@@ -72,7 +72,7 @@ _MoveBoulderText::
 	text_ram wStringBuffer1
 	text " can"
 	line "move boulders."
-	autodone
+	prompt
 
 _AskStrengthText::
 	text "A #MON may be"
@@ -118,7 +118,7 @@ _UseHeadbuttText::
 	text_ram wStringBuffer2
 	text " did a"
 	line "HEADBUTT!"
-	autodone
+	prompt
 
 _HeadbuttNothingText::
 	text "Nope. Nothing…"
@@ -136,7 +136,7 @@ _UseRockSmashText::
 	text_ram wStringBuffer2
 	text " used"
 	line "ROCK SMASH!"
-	autodone
+	prompt
 
 _MaySmashText::
 	text "A #MON may be"
