@@ -75,6 +75,10 @@ _CheckTrainerBattle::
 	pop bc
 	and a
 	jr z, .startbattle
+	ldh a, [hJoypadDown]
+	and PAD_SELECT
+	jr nz, .startbattle
+
 
 .next
 	pop de
