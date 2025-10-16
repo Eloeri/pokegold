@@ -33,6 +33,11 @@ WantsToBattleText::
 	line "wants to battle!"
 	autodone
 
+WantToBattlePluralText::
+	text "<ENEMY>"
+	line "want to battle!"
+	autodone
+
 BattleText_WildFled:
 	text "Wild @"
 	text_ram wEnemyMonNickname
@@ -171,6 +176,11 @@ BattleText_EnemyWasDefeated:
 	line "was defeated!"
 	autodone
 
+BattleText_PluralEnemyWereDefeated:
+	text "<ENEMY>"
+	line "were defeated!"
+	autodone
+
 TiedAgainstText:
 	text "Tied against"
 	line "<ENEMY>!"
@@ -222,6 +232,17 @@ LostAgainstText:
 BattleText_EnemyIsAboutToUseWillPlayerChangeMon:
 	text "<ENEMY>"
 	line "is about to use"
+	scroll "@"
+	text_ram wEnemyMonNickname
+	text "."
+
+	para "Will <PLAYER>"
+	line "change #MON?"
+	done
+
+BattleText_PluralEnemyAreAboutToUseWillPlayerChangeMon:
+	text "<ENEMY>"
+	line "are about to use"
 	scroll "@"
 	text_ram wEnemyMonNickname
 	text "."
