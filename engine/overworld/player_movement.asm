@@ -320,21 +320,20 @@ DoPlayerMovement::
 .HandleWalkAndRun
 	ld a, [wWalkingDirection]
 	cp STANDING
-	jr z, .ensurewalk
+	jr z, .ensurerun
 	ldh a, [hJoypadDown]
-	and B_BUTTON
-	cp B_BUTTON
-	jr nz, .ensurewalk
+	and B_BUTTON | A_BUTTON
+	jr nz, .ensurerun
 	ld a, [wPlayerState]
 	cp PLAYER_RUN
-	call nz, .StartRunning
-	jr .fast
-
-.ensurewalk
-	ld a, [wPlayerState]
-	cp PLAYER_NORMAL
 	call nz, .StartWalking
 	jr .walk
+
+.ensurerun
+	ld a, [wPlayerState]
+	cp PLAYER_NORMAL
+	call nz, .StartRunning
+	jr .fast
 
 
 .TrySurf:
@@ -354,16 +353,15 @@ DoPlayerMovement::
 	jr nz, .ExitWater
 
 	ldh a, [hJoypadDown]
-	and B_BUTTON
-	cp B_BUTTON
-	jr nz, .swimslow
-	ld a, STEP_BIKE
+	and B_BUTTON | A_BUTTON
+	jr nz, .swimfast
+	ld a, STEP_WALK
 	call .DoStep
 	scf
 	ret
 
-.swimslow
-	ld a, STEP_WALK
+.swimfast
+	ld a, STEP_BIKE
 	call .DoStep
 	scf
 	ret
