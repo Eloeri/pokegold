@@ -12,12 +12,12 @@ BattleIntroSlidingPics:
 .loop1
 	push bc
 	ld h, b
-	ld l, $40
-	call .subfunction2
-	ld h, $00
 	ld l, $60
-	call .subfunction2
-	call .subfunction1
+	;call .subfunction2
+	;ld h, $00
+	;ld l, $60
+	;call .subfunction2
+	;call .subfunction1
 	pop bc
 	ld a, c
 	ldh [hSCX], a
