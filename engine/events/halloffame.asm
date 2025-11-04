@@ -25,7 +25,7 @@ HallOfFame::
 	jr nc, .ok
 	inc [hl]
 .ok
-	farcall _SaveGameData
+	farcall SaveGameData
 	call GetHallOfFameParty
 	farcall AddHallOfFameEntry
 
